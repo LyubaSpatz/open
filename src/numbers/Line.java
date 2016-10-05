@@ -21,4 +21,16 @@ public class Line implements Num {
         this.y = y;
         this.z = z;
     }
+
+    public String getX() {
+        return x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    public String getZ() {
+        return z;
+    }
 }

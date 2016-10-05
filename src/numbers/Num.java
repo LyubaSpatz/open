@@ -6,5 +6,5 @@ package numbers;
  * interface for data sets of the playing field
  */
 public interface Num {
-    public String[] getArrayOfNumbers();
+    String[] getArrayOfNumbers();
 }

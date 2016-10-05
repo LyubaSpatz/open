@@ -16,6 +16,7 @@ public class Model {
     * the array of the lines
     * */
     private static final List<Num> lines = new ArrayList<>();
+    private static final List<Line> diagonals = new ArrayList<>();
 
     public boolean isOver(Map<String, String> fields) {
 
@@ -52,6 +53,26 @@ public class Model {
 
         if (fields.get("5").equals("1")) { // get free center
             return "5";
+        }
+
+
+        if (fields.get("5").equals(botSign)) { //protect diagonal
+            int countTotal = 0;
+            int countGamer = 0;
+            for (Map.Entry<String, String> pair : fields.entrySet()) {
+                if (!pair.getValue().equals("1")) {
+                    countTotal++;
+                    if (pair.getValue().equals(gamerSign)) {
+                        countGamer++;
+                    }
+                }
+            }
+            if (countTotal == 3 && countGamer == 2) {
+                String protectionStep = getDiagonalProtection(fields);
+                if (protectionStep!=null) {
+                    return getDiagonalProtection(fields);
+                }
+            }
         }
 
         String[] cornerNumber = Corner.getInstance().getArrayOfNumbers(); // get free corner
@@ -118,6 +139,29 @@ public class Model {
         return null;
     }
 
+    private String getDiagonalProtection(Map<String, String> fields) {
+
+        for (Line num : diagonals) {
+            String[] diagonal = num.getArrayOfNumbers();
+            int count = 0;
+            for (String number : diagonal) {
+
+                String value = fields.get(number);
+                if (!value.equals("1")) {
+
+                    count++;
+                }
+                if (count==3) {
+                    return Integer.toString(Integer.parseInt(num.getZ())-1);
+                }
+
+            }
+
+
+        }
+        return null;
+    }
+
     private String canEnd(Map<String, String> fields, String sign) {
 
         for (Num num : lines) {
@@ -166,8 +210,10 @@ public class Model {
 
         Num line7 = new Line("1", "5", "9");
         lines.add(line7);
+        diagonals.add((Line)line7);
 
         Num line8 = new Line("3", "5", "7");
         lines.add(line8);
+        diagonals.add((Line)line8);
     }
 }
